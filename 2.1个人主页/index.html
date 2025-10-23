@@ -1,0 +1,49 @@
+<!DOCTYPE html> <!-- 告诉浏览器：用HTML5标准解析 -->
+<html lang="zh-CN"> <!-- 整个页面的语言是简体中文 -->
+<head> <!-- 页头：放“看不见但很重要”的信息 -->
+  <meta charset="utf-8"> <!-- 统一用UTF-8，防止中文乱码 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- 让手机端不挤压 -->
+  <title>我的主页</title> <!-- 浏览器标签上的标题 -->
+  <style>
+  .avatar {
+    width: 160px;          /* 显示宽度：你可以改成 120/140/180 */
+    height: 160px;         /* 配合 width，做成正方形 */
+    border-radius: 50%;    /* 变圆 */
+    object-fit: cover;     /* 居中裁剪，避免压扁变形 */
+    display: block;        /* 让 margin 居中生效 */
+    margin: 16px 0;     /* 水平居中 + 顶部留白 */
+  }
+  
+  </style>
+
+</head>
+
+<body> <!-- 页面的可见内容都在body里 -->
+  <header>
+    朱骏濮的个人主页
+  </header>
+
+  <main>
+    姓名: 朱骏濮<br>
+    学号: 202500130222<br>
+    专业: 计算机科学与技术<br>
+    年级: 大一<br>
+    爱好: 打网球,羽毛球,狼人杀,剧本杀等桌游<br>
+    <figure>
+  <img class="avatar" src="palaoshan.jpg" alt="国庆爬崂山顶峰照片">
+  <figcaption>国庆爬崂山顶峰</figcaption>
+  </figure>
+
+  <figure>
+    <img class="avatar" src="wangqiu.jpg" alt="思壮杯网球比赛照片">
+    <figcaption>思壮杯网球比赛</figcaption>
+  </figure>
+
+
+  </main>
+
+  <footer>
+    联系方式: zhujunpu@mail.sdu.edu.cn
+  </footer>
+</body>
+</html>
