@@ -60,6 +60,7 @@
                     ]
                 },
                 "properties": {
+                    "capacity": 3,
                     "name": "凤凰居1号宿舍楼下",
                     "address": "凤凰居1号楼北侧指定停车区",
                     "center": [
@@ -98,6 +99,7 @@
                     ]
                 },
                 "properties": {
+                    "capacity": 4,
                     "name": "图书馆南门",
                     "address": "图书馆南门入口西侧",
                     "center": [
@@ -136,6 +138,7 @@
                     ]
                 },
                 "properties": {
+                    "capacity": 5,
                     "name": "教学楼",
                     "address": "教学楼东楼",
                     "center": [
@@ -174,6 +177,7 @@
                     ]
                 },
                 "properties": {
+                    "capacity": 4,
                     "name": "食堂西门",
                     "address": "食堂北门出口处",
                     "center": [
@@ -212,6 +216,7 @@
                     ]
                 },
                 "properties": {
+                    "capacity": 3,
                     "name": "校医院北侧",
                     "address": "校医院西侧非机动车停放区",
                     "center": [
@@ -250,6 +255,7 @@
                     ]
                 },
                 "properties": {
+                    "capacity": 4,
                     "name": "体育馆东门",
                     "address": "体育馆东门入口南侧",
                     "center": [
@@ -616,7 +622,7 @@
         L.geoJSON(parkingGeo, 
             {
                 style: () => ({color: 'blue', weight: 2, fillOpacity: 0.2}), //设置样式,多边形样式，蓝色边框，2像素宽，透明度20%
-                onEachFeature: (f,layer) => layer.bindPopup(`名称：${f.properties.name}<br>容量：${f.properties.capacity}辆`)//绑定弹出框，显示停车场名称和单车辆数
+                onEachFeature: (f,layer) => layer.bindPopup(`名称：${f.properties.name}<br>地址：${f.properties.address}<br>容量：${f.properties.capacity}辆<br>中心点：${f.properties.center[0]}, ${f.properties.center[1]}`)//绑定弹出框，显示停车场名称、单车辆数和中心点信息
             }).addTo(map);
 
         //下面这些代码用于显示单车
