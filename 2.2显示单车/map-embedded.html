@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>map-embedded</title>
+    <!-- 引入 Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <h1>山东大学电动车可视化</h1>
+    <!-- 设置地图的长和宽 -->
+    <!-- 全宽、高度为浏览器窗口95%的空盒子 ，方便后面塞地图-->
+    <div id="osm-map" style="width: 100%; height: 95vh; margin: 20px 0;"></div>
+    <script>
+        // 初始化地图
+        // 设置地图中心点与缩放级别
+        //将刚才的空盒子变为 地图
+        // 并且把地图放到山东大学青岛校区附近，缩放到15级（街道）级别
+        const map = L.map('osm-map').setView([36.365, 120.684], 15);
+
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        //直接内嵌算了,停车点位置信息
+        const parkingGeo = {"type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                120.6844,
+                                36.3591
+                            ],
+                            [
+                                120.6848,
+                                36.3591
+                            ],
+                            [
+                                120.6848,
+                                36.3595
+                            ],
+                            [
+                                120.6844,
+                                36.3595
+                            ],
+                            [
+                                120.6844,
+                                36.3591
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "name": "凤凰居1号宿舍楼下",
+                    "address": "凤凰居1号楼北侧指定停车区",
+                    "center": [
+                        120.6846,
+                        36.3593
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                120.6834,
+                                36.3657
+                            ],
+                            [
+                                120.6838,
+                                36.3657
+                            ],
+                            [
+                                120.6838,
+                                36.3661
+                            ],
+                            [
+                                120.6834,
+                                36.3661
+                            ],
+                            [
+                                120.6834,
+                                36.3657
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "name": "图书馆南门",
+                    "address": "图书馆南门入口西侧",
+                    "center": [
+                        120.6836,
+                        36.3659
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                120.6821,
+                                36.3625
+                            ],
+                            [
+                                120.6825,
+                                36.3625
+                            ],
+                            [
+                                120.6825,
+                                36.3629
+                            ],
+                            [
+                                120.6821,
+                                36.3629
+                            ],
+                            [
+                                120.6821,
+                                36.3625
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "name": "教学楼",
+                    "address": "教学楼东楼",
+                    "center": [
+                        120.6823,
+                        36.3627
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                120.6876,
+                                36.3596
+                            ],
+                            [
+                                120.6880,
+                                36.3596
+                            ],
+                            [
+                                120.6880,
+                                36.3600
+                            ],
+                            [
+                                120.6876,
+                                36.3600
+                            ],
+                            [
+                                120.6876,
+                                36.3596
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "name": "食堂西门",
+                    "address": "食堂北门出口处",
+                    "center": [
+                        120.6878,
+                        36.3598
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                120.6849,
+                                36.3585
+                            ],
+                            [
+                                120.6853,
+                                36.3585
+                            ],
+                            [
+                                120.6853,
+                                36.3589
+                            ],
+                            [
+                                120.6849,
+                                36.3589
+                            ],
+                            [
+                                120.6849,
+                                36.3585
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "name": "校医院北侧",
+                    "address": "校医院西侧非机动车停放区",
+                    "center": [
+                        120.6851,
+                        36.3587
+                    ]
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                120.6811,
+                                36.3587
+                            ],
+                            [
+                                120.6815,
+                                36.3587
+                            ],
+                            [
+                                120.6815,
+                                36.3591
+                            ],
+                            [
+                                120.6811,
+                                36.3591
+                            ],
+                            [
+                                120.6811,
+                                36.3587
+                            ]
+                        ]
+                    ]
+                },
+                "properties": {
+                    "name": "体育馆东门",
+                    "address": "体育馆东门入口南侧",
+                    "center": [
+                        120.6813,
+                        36.3589
+                    ]
+                }
+            }
+        ]}
+
+        //直接内嵌单车信息
+        const bikeGeo = 
+                {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6845,
+                            36.3592
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-001",
+                        "battery": 87,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6847,
+                            36.3593
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-002",
+                        "battery": 42,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6844,
+                            36.3594
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-003",
+                        "battery": 95,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6835,
+                            36.3658
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-004",
+                        "battery": 63,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6837,
+                            36.3659
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-005",
+                        "battery": 29,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6836,
+                            36.3660
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-006",
+                        "battery": 78,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6834,
+                            36.3657
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-007",
+                        "battery": 15,
+                        "status": "待充电"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6822,
+                            36.3626
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-008",
+                        "battery": 91,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6824,
+                            36.3627
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-009",
+                        "battery": 55,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6823,
+                            36.3628
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-010",
+                        "battery": 33,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6821,
+                            36.3625
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-011",
+                        "battery": 67,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6825,
+                            36.3626
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-012",
+                        "battery": 8,
+                        "status": "待充电"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6877,
+                            36.3597
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-013",
+                        "battery": 72,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6879,
+                            36.3598
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-014",
+                        "battery": 49,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6876,
+                            36.3599
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-015",
+                        "battery": 93,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6880,
+                            36.3596
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-016",
+                        "battery": 22,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6850,
+                            36.3586
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-017",
+                        "battery": 58,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6852,
+                            36.3588
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-018",
+                        "battery": 81,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6849,
+                            36.3587
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-019",
+                        "battery": 11,
+                        "status": "待充电"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6812,
+                            36.3588
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-020",
+                        "battery": 66,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6814,
+                            36.3589
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-021",
+                        "battery": 37,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6813,
+                            36.3590
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-022",
+                        "battery": 98,
+                        "status": "可用"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            120.6811,
+                            36.3587
+                        ]
+                    },
+                    "properties": {
+                        "bike_id": "MT-SDU-023",
+                        "battery": 45,
+                        "status": "可用"
+                    }
+                }
+            ]
+        }
+        //下面是停车区的相关代码，用于引入文件，划停车区，显示名称与单车辆数
+        L.geoJSON(parkingGeo, 
+            {
+                style: () => ({color: 'blue', weight: 2, fillOpacity: 0.2}), //设置样式,多边形样式，蓝色边框，2像素宽，透明度20%
+                onEachFeature: (f,layer) => layer.bindPopup(`名称：${f.properties.name}<br>容量：${f.properties.capacity}辆`)//绑定弹出框，显示停车场名称和单车辆数
+            }).addTo(map);
+
+        //下面这些代码用于显示单车
+        L.geoJSON(bikeGeo, {
+                pointToLayer: (f,latlng) => { //换颜色为彩色
+                    const b = f.properties.battery; //取出单车电量
+                    const color = b > 70 ? 'green' : b > 30 ? 'orange' : 'red'; //根据电量设置颜色,以便让单车电量可视化，让用户用着比较舒服
+                    return L.circleMarker(latlng, {
+                        radius: 8,  //直径8像素
+                        color: 'white',weight: 2 ,//白色边框，宽2像素
+                        fillColor: color, fillOpacity: 0.9 ,//按电量填充颜色，透明度90%
+
+                    });
+                },
+                onEachFeature: (f,layer) => {
+                    const p = f.properties;
+                    layer.bindPopup(`单车ID：${p.bike_id}<br>电量：${p.battery}%<br>状态：${p.status}`); //显示相关单车信息
+                }
+                    
+            }).addTo(map);
+    </script>
+</body>
+
+</html>
