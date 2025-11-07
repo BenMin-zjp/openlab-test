@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <title>山东大学电动车可视化</title>
     <!-- 引入 Leaflet -->
+    <!-- 查资料知道，link是用于链接外部资源，建立文档与外部资源之间的关系 -->
+    <!-- 核心属性rel，告知样式，href则告知具体网站 -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- src是嵌入地图 -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
@@ -19,13 +22,14 @@
         // 设置地图中心点与缩放级别
         //将刚才的空盒子变为 地图
         // 并且把地图放到山东大学青岛校区附近，缩放到15级（街道）级别
+        // L是leaflet的缩写，setView指出中心点与缩放级别
         const map = L.map('osm-map').setView([36.365, 120.684], 15);
 
-
+        //leaflet中的函数，创建一块一块的小地图，再拼起来 z是缩放级别；x，y是瓦片坐标
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 19,//支持的最大缩放级别
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        }).addTo(map);//添加到之前创建的地图中
         
         //直接内嵌算了,停车点位置信息
         const parkingGeo = {"type": "FeatureCollection",
@@ -619,18 +623,22 @@
             ]
         }
         //下面是停车区的相关代码，用于引入文件，划停车区，显示名称与单车辆数
-        L.geoJSON(parkingGeo, 
+
+        L.geoJSON(parkingGeo,  //parkingGeo是对象，目标是上面的那一个停车点内嵌信息
             {
-                style: () => ({color: 'blue', weight: 2, fillOpacity: 0.2}), //设置样式,多边形样式，蓝色边框，2像素宽，透明度20%
+                style: () => ({color: 'blue', weight: 2, fillOpacity: 0.2}), //设置样式属性,多边形样式，蓝色边框，2像素宽，透明度20%
+                //onEachFeature是用于要素添加额外的功能
+                //这里的f是每个停车区的要素，layer是对应的图层
                 onEachFeature: (f,layer) => layer.bindPopup(`名称：${f.properties.name}<br>地址：${f.properties.address}<br>容量：${f.properties.capacity}辆<br>中心点：${f.properties.center[0]}, ${f.properties.center[1]}`)//绑定弹出框，显示停车场名称、单车辆数和中心点信息
             }).addTo(map);
 
         //下面这些代码用于显示单车
         L.geoJSON(bikeGeo, {
+                //pointToLayer用于将GeoJSON点要素转换为Leaflet图层
                 pointToLayer: (f,latlng) => { //换颜色为彩色
                     const b = f.properties.battery; //取出单车电量
                     const color = b > 70 ? 'green' : b > 30 ? 'orange' : 'red'; //根据电量设置颜色,以便让单车电量可视化，让用户用着比较舒服
-                    return L.circleMarker(latlng, {
+                    return L.circleMarker(latlng, {//创建一个圆形标记
                         radius: 8,  //直径8像素
                         color: 'white',weight: 2 ,//白色边框，宽2像素
                         fillColor: color, fillOpacity: 0.9 ,//按电量填充颜色，透明度90%
